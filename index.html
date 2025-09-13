@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Login | Neon Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-black flex items-center justify-center">
+
+  <div class="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-8">
+    <h1 class="text-center text-3xl font-extrabold text-white mb-6">Neon Chat</h1>
+
+    <div class="grid grid-cols-2 gap-2 bg-black/20 p-1 rounded-xl mb-4">
+      <button id="tab-login" class="py-2 rounded-lg bg-purple-600 text-white">Login</button>
+      <button id="tab-signup" class="py-2 rounded-lg text-white hover:bg-white/10">Sign Up</button>
+    </div>
+
+    <form id="form-login" class="space-y-3">
+      <input class="w-full p-3 rounded-xl bg-black/40 text-white" name="username" placeholder="Username" required />
+      <input class="w-full p-3 rounded-xl bg-black/40 text-white" type="password" name="password" placeholder="Password" required />
+      <button class="w-full py-3 rounded-xl bg-purple-600 text-white">Login</button>
+      <p id="login-msg" class="text-sm text-red-300 h-5"></p>
+    </form>
+
+    <form id="form-signup" class="space-y-3 hidden">
+      <input class="w-full p-3 rounded-xl bg-black/40 text-white" name="username" placeholder="New username" required />
+      <input class="w-full p-3 rounded-xl bg-black/40 text-white" type="password" name="password" placeholder="New password" required />
+      <button class="w-full py-3 rounded-xl bg-emerald-600 text-white">Create account</button>
+      <p class="text-xs text-white/70">Note: Passwords must be unique across all users.</p>
+      <p id="signup-msg" class="text-sm text-red-300 h-5"></p>
+    </form>
+  </div>
+
+  <script>
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+    const formLogin = document.getElementById('form-login');
+    const formSignup = document.getElementById('form-signup');
+
+    tabLogin.onclick = () => {
+      tabLogin.classList.add('bg-purple-600'); tabSignup.classList.remove('bg-purple-600');
+      formLogin.classList.remove('hidden'); formSignup.classList.add('hidden');
+    };
+    tabSignup.onclick = () => {
+      tabSignup.classList.add('bg-purple-600'); tabLogin.classList.remove('bg-purple-600');
+      formSignup.classList.remove('hidden'); formLogin.classList.add('hidden');
+    };
+
+    formLogin.onsubmit = async (e) => {
+      e.preventDefault();
+      const fd = new FormData(formLogin);
+      const res = await fetch('/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(Object.fromEntries(fd)) });
+      const j = await res.json();
+      if (j.ok) location.href = '/chat.html'; else document.getElementById('login-msg').textContent = j.msg || 'Login failed';
+    };
+
+    formSignup.onsubmit = async (e) => {
+      e.preventDefault();
+      const fd = new FormData(formSignup);
+      const res = await fetch('/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(Object.fromEntries(fd)) });
+      const j = await res.json();
+      if (j.ok) location.href = '/chat.html'; else document.getElementById('signup-msg').textContent = j.msg || 'Sign up failed';
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Neon Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="min-h-screen bg-slate-900 text-white">
+  <header class="px-6 py-4 bg-slate-800 flex items-center justify-between">
+    <h1 class="text-xl font-bold">Realtime Chat</h1>
+    <button id="logout" class="px-3 py-1 rounded-lg bg-slate-700 hover:bg-slate-600">Logout</button>
+  </header>
+
+  <main class="grid md:grid-cols-4 gap-4 p-4">
+    <aside class="md:col-span-1 bg-slate-800/60 rounded-2xl p-4">
+      <h2 class="font-semibold mb-2">Online</h2>
+      <ul id="users" class="space-y-1 text-sm"></ul>
+    </aside>
+
+    <section class="md:col-span-3 bg-slate-800/60 rounded-2xl p-4 flex flex-col">
+      <div id="feed" class="flex-1 overflow-y-auto space-y-2 p-2"></div>
+
+      <div class="mt-4 grid grid-cols-[1fr_auto_auto_auto_auto] gap-2">
+        <input id="msg" class="p-3 rounded-xl bg-slate-700 placeholder-slate-300" placeholder="Type a message..." />
+        <button id="send" class="px-4 rounded-xl bg-purple-600">Send</button>
+        <button id="audio" class="px-4 rounded-xl bg-emerald-600">Call</button>
+        <button id="video" class="px-4 rounded-xl bg-blue-600">Video</button>
+        <input type="file" id="file" class="rounded-lg text-sm p-1 bg-slate-700"/>
+        <button id="sendFile" class="px-3 rounded-lg bg-pink-600">Send File</button>
+      </div>
+
+      <div class="mt-4 grid grid-cols-2 gap-3">
+        <video id="localVideo" autoplay playsinline muted class="w-full rounded-2xl border border-emerald-500"></video>
+        <video id="remoteVideo" autoplay playsinline class="w-full rounded-2xl border border-blue-500"></video>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/client.js"></script>
+</body>
+</html>
